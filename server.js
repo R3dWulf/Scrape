@@ -33,7 +33,7 @@ app.use(express.static("public"));
 //var db = mongoose.connection;
 
 //Heroku
-mongoose.connect.openUri("mongodb://heroku_6fk8nsgj:gonnaeu1lb6qbfii3gb6npoqcg@ds133104.mlab.com:33104/heroku_6fk8nsgj");
+mongoose.connect("mongodb://heroku_6fk8nsgj:gonnaeu1lb6qbfii3gb6npoqcg@ds133104.mlab.com:33104/heroku_6fk8nsgj",{ useMongoClient: true });
 var db = mongoose.connection;
 
 
