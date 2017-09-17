@@ -1,0 +1,16 @@
+.jumbotron {
+	background-image: url('../images/nyt-building.png');
+	background-image: no-repeat;
+	height: 400px;
+
+}
+
+.panel-heading{
+	background-color: blue;
+}
+
+#paper {
+	height: 50px;
+	width: 50px;
+	border: none;
+}
