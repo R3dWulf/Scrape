@@ -16,6 +16,7 @@ var cheerio = require("cheerio");
 mongoose.Promise = Promise;
 
 
+
 // Initialize Express
 var app = express();
 
@@ -35,6 +36,8 @@ app.use(express.static("public"));
 //Heroku
 mongoose.connect("mongodb://heroku_6fk8nsgj:gonnaeu1lb6qbfii3gb6npoqcg@ds133104.mlab.com:33104/heroku_6fk8nsgj",{ useMongoClient: true });
 var db = mongoose.connection;
+
+var PORT = process.env.PORT || 3000;
 
 
 // Show any mongoose errors
@@ -157,6 +160,4 @@ app.post("/articles/:id", function(req, res) {
 
 
  //Listen on port 3000
- app.listen(process.env.PORT || 5000, function() {
-   console.log("App running on port 3000!");
- });
+ app.listen(PORT);
