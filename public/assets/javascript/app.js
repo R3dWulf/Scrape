@@ -1,13 +1,3 @@
-$(document).ready(function(){
-    $.ajax({
-      url : "/scrape",
-      method: "get",
-      success : function(data){
-        console.log(data);
-      }
-    });
-});
-
 $("#paper").on('click', function(){
     $.ajax({
     method: "GET",
@@ -15,6 +5,10 @@ $("#paper").on('click', function(){
     success : function(data){
         console.log("+++++++++", data);
         for (var i = 0; i < data.length; i++) {
+          //console.log("()()()()()()"+data[i]._id);
+          // Display the apropos information on the page
+          //$("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+          //console.log("()()()()"+data[i].title );
            $("#scrape").append(
               '<div class="row">' +
                   '<div class="col-md-12">' +           
@@ -39,15 +33,24 @@ $("#paper").on('click', function(){
 
 
 
+// Whenever someone clicks a p tag
+// $("#openModal").on("click", function() {
+//   // Empty the notes from the note section
+//   // Save the id from the p tag
+//   var thisId = $('#openModal').attr("data-id");
+//   console.log("()()()()"+thisId);
+
+// });
+
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
-  var thisId = $("#openModal").attr("data-id");
+  var thisId = $(this).attr("data-id");
 
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
     method: "POST",
-    url: "/articles/" + thisId,
+    url: "/notes",
     data: {
       // Value taken from title input
       title: $("#inputTitle").val(),
@@ -58,7 +61,7 @@ $(document).on("click", "#savenote", function() {
     // With that done
     .done(function(data) {
       // Log the response
-      console.log("()()()()", data);
+      console.log(data);
       // Empty the notes section
       $("#notes").empty();
     });
@@ -67,52 +70,3 @@ $(document).on("click", "#savenote", function() {
   $("#inputTitle").val("");
   $("#bodyinput").val("");
 });
-
-$('#getNotesButton').on('click', function(){
-    //$('#scrape').hide();
-    $('#scrape').remove();
-    $.ajax({
-      url: '/notes',
-      method: 'get',
-      success: function(data){
-        console.log(data);
-        for (var i = 0; i < data.length; i++) {
-           $("#notes").append(
-              '<div class="row">' +
-                  '<div class="col-md-12">' +           
-                      '<div class="panel-group">' +
-                          '<div class="panel panel-primary">'+
-                              '<div class="panel panel-heading">' +
-                                  '<p>' + data[i].title + '</p>' +    //if onclick if added here, then getNotesButton will get the onclick attr not the delete button                    
-                              '</div>' + 
-                              '<div class="panel-body">' + 
-                                  '<p>' +data[i].body + '</p>' +
-                              '</div>' +
-                          '<div>' +
-                      '<div>' +
-                  '<div>' +
-              '<div>'
-            );
-        }
-      }
-    });
-});
-
-
-//Too many ajax calls, have to add button to index to delete all notes instead of individually 
-$("#delete").on("click", function(){
-    $.ajax({
-      url :"/notes",
-      method: "post",
-      error: function(error){
-        console.log(error);
-      },
-      success: function(){
-        window.location.reload();
-      }
-    });
-});
-
-
-
-

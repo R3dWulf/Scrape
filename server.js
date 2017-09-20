@@ -14,6 +14,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
+var path = require('path');
 
 
 
@@ -29,15 +30,17 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 
+
 //Local
-//mongoose.connect("mongodb://localhost/week18day3mongoose");
-//var db = mongoose.connection;
+// mongoose.connect("mongodb://localhost/articlesandnotes",{ useMongoClient: true });
+// var db = mongoose.connection;
+// var PORT = 3000;
 
 //Heroku
 mongoose.connect("mongodb://heroku_6fk8nsgj:gonnaeu1lb6qbfii3gb6npoqcg@ds133104.mlab.com:33104/heroku_6fk8nsgj",{ useMongoClient: true });
 var db = mongoose.connection;
 
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT;
 
 
 // Show any mongoose errors
@@ -53,7 +56,6 @@ db.once("open", function() {
 
 // Routes
 // ======
-
 // A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
@@ -158,6 +160,32 @@ app.post("/articles/:id", function(req, res) {
   });
 });
 
+app.get('/notes', function(request, response){
+  Note.find({}, function(error, doc) {
+    // Log any errors
+    if (error) {
+      console.log(error);
+    }
+    // Or send the doc to the browser as a json object
+    else {
+      response.json(doc)
+     }
+  });
+});
+
+
+app.post("/notes", function(request, response){
+	 Note.find({})
+	    .remove()
+	    .exec( error => { // Reply to the client, otherwise the request will hang and timeout.
+	        if(error) return res.status(500).send(error);
+	        res.status(200).end();
+	    });
+
+}); // This is reached when the client calls post('delete/user/1a2b3c4d'). The id is read with req.params.id
+
 
  //Listen on port 3000
- app.listen(PORT);
+ app.listen(PORT, function(){
+     console.log("listening on " + PORT);
+ });
